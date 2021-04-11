@@ -2,6 +2,7 @@ import yaml
 import shodan
 import argparse
 import json
+import pprint
 
 # getting the secret key secretly ;p
 key = yaml.safe_load(open('api.yaml'))['key']
@@ -13,8 +14,9 @@ parser.add_argument('--ip', help='IP to scan', required=True)
 args = vars(parser.parse_args())
 
 try:
-    result = api.host(args['ip'])
-    result = json.dumps(result)  
-    print(result)
+    # --ip
+    if('ip' in args):
+        result = api.host(args['ip'])
+        pprint.pprint(result)
 except Exception as e:
     print(e)
