@@ -20,14 +20,27 @@ key = yaml.safe_load(open('api.yaml'))['key']
 api = shodan.Shodan(key)
 
 parser = argparse.ArgumentParser(description='Shodan Autobot Script')
-parser.add_argument('--ip', help='IP to scan', required=True)
+parser.add_argument('--ip', help='IP to scan', required=False)
+parser.add_argument('--count', help='Count the result', required=False)
+parser.add_argument('--count-filters', help='Filter for the count. https://beta.shodan.io/search/examples' , required=False)
+parser.add_argument('--count-facets', help='Facets for the count. https://beta.shodan.io/search/facet' , required=False)
+
 args = vars(parser.parse_args())
 
 try:
     # --ip
-    if('ip' in args):
-        print(bcolors.HEADER,f"###  The output of ip:{args['ip']}   ###",bcolors.ENDC)
+    print(args)
+    if(args['ip'] is not None):
+        print(bcolors.HEADER,f"###  The output of ip:{args['ip']}   ###",bcolors.ENDC,"\n")
         result = api.host(args['ip'])
         pprint.pprint(result)
+        print("\n")
+        
+    # --count
+    if(args['count'] == '1'):
+        print(bcolors.HEADER,f"###  The output of query : {args['count_filters']} | facets : {args['count_facets']} ###",bcolors.ENDC,"\n")
+        result = api.count(query=args['count_filters'], facets=args['count_facets'])
+        pprint.pprint(result)
+        print("\n")
 except Exception as e:
     print(e)
