@@ -21,9 +21,10 @@ api = shodan.Shodan(key)
 
 parser = argparse.ArgumentParser(description='Shodan Autobot Script')
 parser.add_argument('--ip', help='IP to scan', required=False)
-parser.add_argument('--count', help='Count the result', required=False)
 parser.add_argument('--count-filters', help='Filter for the count. https://beta.shodan.io/search/examples' , required=False)
 parser.add_argument('--count-facets', help='Facets for the count. https://beta.shodan.io/search/facet' , required=False)
+parser.add_argument('--search-filters', help='Filter for the search. https://beta.shodan.io/search/examples' , required=False)
+parser.add_argument('--search-facets', help='Facets for the search. https://beta.shodan.io/search/facet' , required=False)
 
 args = vars(parser.parse_args())
 
@@ -35,12 +36,13 @@ try:
         result = api.host(args['ip'])
         pprint.pprint(result)
         print("\n")
-        
+
     # --count
-    if(args['count'] == '1'):
+    if(args['count_filters'] and args['count_facets']):
         print(bcolors.HEADER,f"###  The output of query : {args['count_filters']} | facets : {args['count_facets']} ###",bcolors.ENDC,"\n")
         result = api.count(query=args['count_filters'], facets=args['count_facets'])
         pprint.pprint(result)
         print("\n")
+        
 except Exception as e:
     print(e)
