@@ -31,6 +31,8 @@ parser.add_argument('--count-facets', help='Facets for the count. https://beta.s
 # --facets
 parser.add_argument('--facets',help="List the facets", required=False, action='store_true')
 
+# --filters
+parser.add_argument('--filters',help="List the filters", required=False, action='store_true')
 
 args = vars(parser.parse_args())
 
