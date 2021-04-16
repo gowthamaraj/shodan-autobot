@@ -34,11 +34,16 @@ parser.add_argument('--facets',help="List the facets", required=False, action='s
 # --filters
 parser.add_argument('--filters',help="List the filters", required=False, action='store_true')
 
+# --decode
+parser.add_argument('--decode',help="Decode the query", required=False)
+
+# --bulk scan
+parser.add_argument('--bulk-ips',help="Bulk IP scan", required=False)
+
 args = vars(parser.parse_args())
 
 try:
     # --ip
-    print(args)
     if(args['ip'] is not None):
         print(bcolors.HEADER,f"###  The output of ip:{args['ip']}   ###",bcolors.ENDC,"\n")
         result = api.host(args['ip'])
@@ -63,6 +68,20 @@ try:
         print(bcolors.HEADER,f"###  List of Filters ###",bcolors.ENDC,"\n")
         print(api.search_filters())
         print("\n")
+
+    # --decode 
+    if(args['decode']):
+        print(bcolors.HEADER,f"###  Decoded Query ###",bcolors.ENDC,"\n")
+        print(api.search_tokens(query=args['decode']))
+        print("\n")
+    
+    # --bulk-ips
+    if(args['bulk_ips']):
+        print(bcolors.HEADER,f"###  Bulk IP Results: ###",bcolors.ENDC,"\n")
+        ips = open(args['bulk_ips']).read().split("\n")
+        pprint.pprint(ips)
+        print("\n")        
+        
 
 except Exception as e:
     print(e)
